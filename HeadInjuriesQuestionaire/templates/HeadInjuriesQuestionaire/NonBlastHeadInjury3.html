@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Page 3</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}HeadInjuriesQuestionaire/style.css" />
+
+    <script type="text/javascript">
+        
+        function show(id) {
+            if (document.getElementById(id).style.display == 'none') {
+                document.getElementById(id).style.display = 'block';
+            }
+        }
+        function hide(id) {
+            if (document.getElementById(id).style.display == 'block') {
+                document.getElementById(id).style.display = 'none';
+            }
+        }
+
+        function hideOrShow(id) {
+
+            var dropDown = document.getElementById(id);
+
+            if (id == 'ddConsciousnessQuestion1a') {
+                if (dropDown[dropDown.selectedIndex].value == 'ownExperience') {
+                    show('question1b');
+                }
+                else {
+                    hide('question1b');
+                }
+            }
+            else if (id == 'ddConsciousnessQuestion1b') {
+                if (dropDown[dropDown.selectedIndex].value == 'other') {
+                    show('question1bOther');
+                }
+                else {
+                    hide('question1bOther');
+                }
+            }
+            else if (dropDown[dropDown.selectedIndex].value == 'yes') {
+                if (id.charAt(id.length - 1) == '1') {
+                    show('question1a');
+                    show('question1c');
+
+                    var dropDown1a = document.getElementById('ddConsciousnessQuestion1a');
+
+                    if (dropDown1a[dropDown1a.selectedIndex].value == 'ownExperience') {
+                        show('question1b');
+                    }
+                }
+            }
+            else if (dropDown[dropDown.selectedIndex].value == 'no') {
+                if (id.charAt(id.length - 1) == '1') {
+                    hide('question1a');
+                    hide('question1b');
+                    hide('question1bOther');
+                    hide('question1c');
+                }
+            }
+        }
+    </script>
+        
+</head>
+<body>
+
+{% if user.is_authenticated %}
+
+<a href="/logout/">Logout</a>
+
+<br /><br /><br /><br />
+
+<form action="../../{{encounter.id}}/nonBlastHeadInjuryPage3/" method="post">
+{% csrf_token %}
+
+<center>
+    <h1>Non-Blast Head Injury Page 3</h1>
+
+    <br /><br />
+
+    <table cellpadding="2" cellspacing="2" width="700">
+        <tr>
+            <td width="50" align="right">
+                <b>
+                    1.
+                </b>
+            </td>
+            <td width="400" align="left">
+                <b>
+                    Did you become unconscious, that is you could not see, speak, <u>and</u>
+                    move for any period of time?
+                </b>
+            </td>
+            <td width="250" align="left">
+                <select name="ddConsciousnessQuestion1" id="ddConsciousnessQuestion1" onchange="hideOrShow(this.id);">
+                    <option value="default"></option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <div id="question1a" style="display:none;">
+
+        <table width="700" cellpadding="2" cellspacing="2">
+
+            <tr>
+                <td width="75" align="right">
+                    <b>
+                        1a.
+                    </b>
+                </td>
+                <td width="375" align="left">
+                    <b>
+                        Were you told this by a witness or is your report based upon
+                        your own experience?
+                    </b>
+                </td>
+                <td width="250" align="left">
+                    <select name="ddConsciousnessQuestion1a" id="ddConsciousnessQuestion1a" onchange="hideOrShow(this.id);">
+                        <option value="default"></option>
+                        <option value="witness">witness</option>
+                        <option value="ownExperience">own experience</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div id="question1b" style="display:none;">
+
+        <table width="700" cellpadding="2" cellspacing="2">
+
+            <tr>
+                <td width="75" align="right">
+                    <b>
+                        &nbsp;
+                    </b>
+                </td>
+                <td width="375" align="left">
+                    <b>
+                        If you selected "own experience", how did you determine this?
+                    </b>
+                </td>
+                <td width="250" align="left">
+                    <select name="ddConsciousnessQuestion1b" id="ddConsciousnessQuestion1b" onchange="hideOrShow(this.id);">
+                        <option value="default"></option>
+                        <option value="eventsThatPassed">events that passed</option>
+                        <option value="evidenceFromTimeOrVideo">watch/phone time, or video</option>
+                        <option value="guess">guess</option>
+                        <option value="other">other</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div id="question1bOther" style="display:none;">
+
+        <table width="700" cellpadding="2" cellspacing="2">
+
+            <tr>
+                <td width="75" align="right">
+                    <b>
+                        &nbsp;
+                    </b>
+                </td>
+                <td width="375" align="left">
+                    <b>
+                        Other description:
+                    </b>
+                </td>
+                <td width="250" align="left">
+                    <input type="text" id="txtConsciousnessQuestion1b" name="txtConsciousnessQuestion1b" />
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div id="question1c" style="display:none;">
+
+        <table width="700" cellpadding="2" cellspacing="2">
+
+            <tr>
+                <td width="75" align="right">
+                    <b>
+                        1b.
+                    </b>
+                </td>
+                <td width="375" align="left">
+                    <b>
+                        How long were you unconscious?
+                    </b>
+                </td>
+                <td width="250" align="left">
+                    <input type="number" name="numConsciousnessQuestion1c" id="numConsciousnessQuestion1c" min="1" max="500" value="1" />
+                    <select name="ddConsciousnessQuestion1c" id="ddConsciousnessQuestion1c">
+                        <option value="seconds">seconds</option>
+                        <option value="minutes">minutes</option>
+                        <option value="hours">hours</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+
+        <div id="userAdvice">
+            If the subject is unable to provide a measureable response to above then instruct <br />
+            him/her, "I understand that this is time that you do not rememeber but please give" <br />
+            me your best guess."  Then repeat the question.<br /><br />
+            If the subject is STILL unable to provide a response then instruct him/her, "Please"<br />
+            try and make your guess by what other people may have told you or on events that you <br />
+            think passed during that time."  Then repeat the question.
+        </div>
+
+    </div>
+
+    <br /><br />
+
+    <input type="submit" value="Save and Continue" />
+
+</center>
+
+</form>
+
+{% else %}
+
+<br /><br /><br />
+<center>
+
+    <h4>You are not logged in.</h4>
+
+    <br /><br />
+
+    <a href="/login/">Login</a>
+
+</center>
+
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿body
+{
+    background-color:beige;
+    font-family:Arial;
+    font-size:small
+}
+
+#numbers
+{
+    font-size:x-large;
+    font-weight:900
+}
+
+input[type="number"] {
+   width:50px;
+}
+
+#question123Error
+{
+    font-size:large;
+    color:red
+}
+
+textarea {
+    resize: none;
+}
+
+#userAdvice
+{
+    font-size:x-small;
+    font-style:italic
+}

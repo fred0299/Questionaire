@@ -1,0 +1,584 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Head Injuries Interview Cover Sheet</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}HeadInjuriesQuestionaire/style.css" />
+    <script type="text/javascript">
+
+        var question3Checked = false;
+
+        function isQuestion3Checked() {
+            if (question3Checked == true) {
+                getQuestion3ID();
+            }
+        }
+
+        function show(id) {
+            if (document.getElementById(id).style.display == 'none') {
+                document.getElementById(id).style.display = 'block';
+            }
+        }
+        function hide(id) {
+            if (document.getElementById(id).style.display == 'block') {
+                document.getElementById(id).style.display = 'none';
+            }
+        }
+
+        function validate123(answer3ID) {
+
+            question3Checked = true;
+
+            document.getElementById('question123Error').innerHTML = "";
+
+            var rdQuestion1 = document.getElementsByName("rdQuestion1");
+            var rdQuestion2 = document.getElementsByName("rdQuestion2");
+            var question1Checked = false;
+            var question2Checked = false;
+            var answer1ID = '';
+            var answer2ID = '';
+
+            for (var i = 0, len = rdQuestion1.length; i < len; i++) {
+                if (rdQuestion1[i].checked) {
+                    answer1ID = rdQuestion1[i].id;
+                    question1Checked = true;
+                }
+            }
+            if (question1Checked == true) {
+                for (var i = 0, len = rdQuestion2.length; i < len; i++) {
+                    if (rdQuestion2[i].checked) {
+                        answer2ID = rdQuestion2[i].id;
+                        question2Checked = true;
+                    }
+                }
+            }
+            else {
+                document.getElementById('question123Error').innerHTML = "You are required to answer questions 1, 2, and 3."; 
+            }
+
+            if (question2Checked == true) {
+                document.getElementById('question123Error').innerHTML = "";
+                createAddionalQuestions(answer1ID, answer2ID, answer3ID);
+            }
+            else {
+                document.getElementById('question123Error').innerHTML = "You are required to answer questions 1, 2, and 3.";
+            }
+        }
+
+        function createAddionalQuestions(answer1, answer2, answer3) {
+
+            if (answer3 == 'rdQuestion3Yes') {
+                show('question4');
+                show('question5');
+                show('question6');
+            }
+            else {
+                hide('question4');
+                hide('question5');
+
+                if (answer1 == 'rdAnswer1Yes' || answer2 == 'rdAnswer2Yes') {
+                    show('question6');
+                }
+                else {
+                    hide('question6');
+                }
+            }
+
+        }
+
+        function getQuestion3ID() {
+
+            var rdQuestion3 = document.getElementsByName("rdQuestion3");
+            var answer3ID = '';
+
+            for (var i = 0, len = rdQuestion3.length; i < len; i++) {
+                if (rdQuestion3[i].checked) {
+                    answer3ID = rdQuestion3[i].id;
+                    validate123(answer3ID);
+                }
+            }
+        }
+
+        function checkBlastAmount() {
+
+            numAnswer4 = document.getElementById('numAnswer4');
+            if (numAnswer4.value > 10) {
+                show('question4ab');
+            }
+            else {
+                hide('question4ab');
+            }
+        }
+
+        function noSymptoms(id) {
+            var ckNoSymptoms = document.getElementById('ckNoSymptoms');
+            var checkboxes = document.querySelectorAll("#ckMemoryProblems, #ckBalanceProblems, #ckDizziness, #ckSensitivityToLight, " +
+                                                       "#ckSensitivityToNoise, #ckRingingInTheEars, #ckIrritability, #ckHeadaches, " +
+                                                       "#ckSleepProblems, #ckDisorientation, #ckTroubleTrackingConversations, " +
+                                                       "#ckLossOfHearing, #ckVomiting, #ckChangeInVision");
+            var txtOtherSymptoms = document.getElementById('txtOtherSymptoms');
+
+            if (ckNoSymptoms.checked == true) {
+                for (var i = 0; i < checkboxes.length; ++i) {
+                    checkboxes[i].checked = false;
+                    checkboxes[i].disabled = true;
+                    txtOtherSymptoms.value = '';
+                    txtOtherSymptoms.disabled = true;
+                }
+            }
+            else {
+                for (var i = 0; i < checkboxes.length; ++i) {
+                    checkboxes[i].disabled = false;
+                    txtOtherSymptoms.disabled = false;
+                }
+            }
+        }
+
+
+
+    </script>
+
+</head>
+<body>
+
+{% if user.is_authenticated %}
+
+    <a href="/logout/">Logout</a><br />
+       
+    <br /><br />
+
+    <form action="../../{{encounter.id}}/coversheetsubmit/" method="post">{% csrf_token %}
+        <br /><br />
+
+        <center>
+            <h1>Head Inuries Interview Cover Sheet</h1>
+        </center>
+
+        <br /><br />
+
+        <table cellspacing="2" cellpadding="2">
+            <tr>
+                <td width="60">
+                    <b id="numbers">1.</b>
+                </td>
+                <td>
+                    <b>
+                        Have you ever hit your head hard enough to have lasting effects or had a <br />
+                        concussion(withouth any LOC or PTA) from something <u>other</u> than an <br />
+                        explosive blast? (Had your bell rung, saw stars, etc)
+                    </b>
+                </td>
+            </tr>
+        </table>
+
+        <table cellspacing="2" cellpadding="2">
+            <tr>
+                <td align="right" width="200">
+                    <input type="radio" value="rdAnswer1Yes" id="rdAnswer1Yes" name="rdQuestion1" onclick="show('question1a');isQuestion3Checked();" />
+                </td>
+                <td>
+                    Yes
+                </td>
+            </tr>
+            <tr>
+                <td align="right" width="200">
+                    <input type="radio" value="rdAnswer1No" id="rdAnswer1No" name="rdQuestion1" onclick="hide('question1a');isQuestion3Checked();" />
+                </td>
+                <td>
+                    No
+                </td>
+            </tr>
+        </table>
+        <div id="question1a" style="display:none;">
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td align="right" width="200">
+                        <input type="number" name="numAnswer1a" id="numAnswer1a" max="10" min="1" value="1" />
+                    </td>
+                    <td>
+                        How many times?
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br />
+
+        <table cellspacing="2" cellpadding="2">
+            <tr>
+                <td width="60">
+                    <b id="numbers">2.</b>
+                </td>
+                <td>
+                    <b>
+                        Have you ever hit your head hard enough to become unconcious AND/OR <br />
+                        experience memory loss (not as a result of blast exposure)?
+                    </b>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td align="right" width="200">
+                    <input type="radio" value="rdAnswer2Yes" id="rdAnswer2Yes" name="rdQuestion2" onclick="show('question2a');isQuestion3Checked();" />
+                </td>
+                <td>
+                    Yes
+                </td>
+            </tr>
+            <tr>
+                <td align="right" width="200">
+                    <input type="radio" value="rdAnswer2No" id="rdAnswer2No" name="rdQuestion2" onclick="hide('question2a');isQuestion3Checked();" />
+                </td>
+                <td>
+                    No
+                </td>
+            </tr>
+        </table>
+        <div id="question2a" style="display:none;">
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td align="right" width="200">
+                        <input type="number" name="numAnswer2a" id="numAnswer2a" max="10" min="1" value="1" />
+                    </td>
+                    <td>
+                        How many times?
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="number" name="numAnswer2b" id="numAnswer2b" max="500" min="0" value="1" />
+                        &nbsp;&nbsp;
+                        <select id="ddAnswer2b" name="ddAnswer2b">
+                            <option value="seconds">second(s)</option>
+                            <option value="minutes">minute(s)</option>
+                            <option value="hours">hour(s)</option>
+                            <option value="days">day(s)</option>
+                        </select>
+                    </td>
+                    <td>
+                        What was the longest period of time you were unconcious?
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="number" name="numAnswer2c" id="numAnswer2c" max="500" min="0" value="1" />
+                        &nbsp;&nbsp;
+                        <select id="ddAnswer2c" name="ddAnswer2c">
+                            <option value="seconds">second(s)</option>
+                            <option value="minutes">minute(s)</option>
+                            <option value="hours">hour(s)</option>
+                            <option value="days">day(s)</option>
+                        </select>
+                    </td>
+                    <td>
+                        What is the longest period of memory loss you experienced?
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br />
+        <table cellspacing="2" cellpadding="2">
+            <tr>
+                <td width="60">
+                    <b id="numbers">3.</b>
+                </td>
+                <td>
+                    <b>
+                        When heavy artillery, an explosive bomb or IED goes off there is a <br />
+                        "blast wave".  It may feel like intense heat, pressure, or almost <br />
+                        like smashing into a wall.  Have you ever experienced this type of <br />
+                        blast or "blast wave" or were you told that you had experienced it?
+                    </b>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td align="right" width="200">
+                    <input type="radio" value="rdQuestion3Yes" id="rdQuestion3Yes" name="rdQuestion3" onclick="validate123(this.id)" />
+                </td>
+                <td>
+                    Yes
+                </td>
+            </tr>
+            <tr>
+                <td align="right" width="200">
+                    <input type="radio" value="rdQuestion3No" id="rdQuestion3No" name="rdQuestion3" onclick="validate123(this.id)" />
+                </td>
+                <td>
+                    No
+                </td>
+            </tr>
+        </table>
+
+        <span id="question123Error"></span>
+
+        <br />
+
+        <div id="question4" style="display:none;">
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td width="60">
+                        <b id="numbers">4.</b>
+                    </td>
+                    <td>
+                        <b>
+                            How many TOTAL times did you feel the blast wave of an explosion?
+                        </b>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="number" name="numAnswer4" id="numAnswer4" max="50" min="0" value="1" onchange="checkBlastAmount()" />
+                    </td>
+                    <td>
+                        (Number of times)
+                    </td>
+                </tr>
+            </table>
+
+            <div id="question4ab" style="display:none;">
+                <table cellspacing="2" cellpadding="2">
+                    <tr>
+                        <td align="right" width="200">
+                            <input type="number" name="numAnswer4a" id="numAnswer4a" max="50" min="0" value="1" />
+                            &nbsp;&nbsp;
+                            <select id="ddAnswer4a" name="ddAnswer4a">
+                                <option value="day">time(s) per day</option>
+                                <option value="week">time(s) per week</option>
+                                <option value="month">time(s) per month</option>
+                            </select>
+                        </td>
+                        <td>
+                            How often, on average, were you exposed to blasts?
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="200">
+                            <input type="number" name="numAnswer4b" id="numAnswer4b" max="50" min="0" value="1" />
+                            &nbsp;&nbsp;
+                            <select id="ddAnswer4b" name="ddAnswer4b">
+                                <option value="days">day(s)</option>
+                                <option value="weeks">week(s)</option>
+                                <option value="months">month(s)</option>
+                            </select>
+                        </td>
+                        <td>
+                            Over what time period?
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div id="question5" style="display:none;">
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td width="60">
+                        <b id="numbers">5.</b>
+                    </td>
+                    <td>
+                        <b>
+                            How close were you to the closest explosion in which you felt the "blast wave"?
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+            </table>
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td align="right" width="200">
+                        <input type="number" name="numAnswer5" id="numAnswer5" max="500" min="0" value="1" />
+                        &nbsp;&nbsp;
+                        <select id="ddAnswer5" name="ddAnswer5">
+                            <option value="inches">inch(es)</option>
+                            <option value="feet">feet</option>
+                            <option value="yards">yard(s)</option>
+                            <option value="miles">mile(s)</option>
+                        </select>
+                    </td>
+                    <td>
+                        (Closest distance)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="question6" style="display:none;">
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td width="60">
+                        <b id="numbers">6.</b>
+                    </td>
+                    <td>
+                        <b>
+                            In the <u>past week</u>, did you have any of the following symptoms?<br />
+                            (check all that apply)
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+            </table>
+            <table cellspacing="2" cellpadding="2">
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckNoSymptoms" name="ckNoSymptoms" onclick="noSymptoms(this.id);" />
+                    </td>
+                    <td>
+                        No Symptoms
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckMemoryProblems" name="ckMemoryProblems" />
+                    </td>
+                    <td>
+                        Memory problems
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckBalanceProblems" name="ckBalanceProblems" />
+                    </td>
+                    <td>
+                        Balance problems
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckDizziness" name="ckDizziness" />
+                    </td>
+                    <td>
+                        Dizziness
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckSensitivityToLight" name="ckSensitivityToLight" />
+                    </td>
+                    <td>
+                        Sensitivity to light
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckSensitivityToNoise" name="ckSensitivityToNoise" />
+                    </td>
+                    <td>
+                        Sensitivity to noise
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckRingingInTheEars" name="ckRingingInTheEars" />
+                    </td>
+                    <td>
+                        Ringing in the ears
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckIrritability" name="ckIrritability" />
+                    </td>
+                    <td>
+                        Irritability
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckHeadaches" name="ckHeadaches" />
+                    </td>
+                    <td>
+                        Headaches
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckSleepProblems" name="ckSleepProblems" />
+                    </td>
+                    <td>
+                        Sleep problems
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckDisorientation" name="ckDisorientation" />
+                    </td>
+                    <td>
+                        Disorientation
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckTroubleTrackingConversations" name="ckTroubleTrackingConversations" />
+                    </td>
+                    <td>
+                        Trouble tracking conversations
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckLossOfHearing" name="ckLossOfHearing" />
+                    </td>
+                    <td>
+                        Loss of hearing in one or both ears
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckVomiting" name="ckVomiting" />
+                    </td>
+                    <td>
+                        Vomiting or nausea
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="checkbox" id="ckChangeInVision" name="ckChangeInVision" />
+                    </td>
+                    <td>
+                        Change in vision in one or both eyes
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" width="200">
+                        <input type="text" id="txtOtherSymptoms" name="txtOtherSymptoms" />
+                    </td>
+                    <td>
+                        Other symptoms
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <br /><br />
+
+        <center>
+            <input type="submit" value="Save and Continue" />
+        </center>
+    </form>
+
+{% else %}
+    <br /><br /><br />
+    <center>
+
+    <h4>You are not logged in.</h4>
+
+    <br /><br />
+
+        <a href="/login/">Login</a>
+
+    </center>
+
+{% endif %}
+
+</body>
+</html>

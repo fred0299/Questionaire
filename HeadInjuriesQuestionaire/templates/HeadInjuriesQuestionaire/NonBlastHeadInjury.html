@@ -1,0 +1,599 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Page 1</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}HeadInjuriesQuestionaire/style.css" />
+
+    <script type="text/javascript">
+
+        function show(id) {
+            if (document.getElementById(id).style.display == 'none') {
+                document.getElementById(id).style.display = 'block';
+            }
+        }
+        function hide(id) {
+            if (document.getElementById(id).style.display == 'block') {
+                document.getElementById(id).style.display = 'none';
+            }
+        }
+
+        function hideOrShow(id) {
+            var dropDown = document.getElementById(id);
+            
+            if (dropDown[dropDown.selectedIndex].value == 'yes') {
+                if (id.charAt(id.length - 1) == '4') {
+                    hide('question4a');
+                }
+                if (id.charAt(id.length - 1) == '5') {
+                    show('question5a');
+                }
+                if (id.charAt(id.length - 1) == '6') {
+                    show('question6a');
+                }
+                if (id.charAt(id.length - 1) == '7') {
+                    show('question7a');
+                }
+                if (id.charAt(id.length - 1) == '8') {
+                    show('question8a');
+                }
+                if (id.charAt(id.length - 1) == '0') {
+                    show('question10a');
+                }
+            }
+            else if (dropDown[dropDown.selectedIndex].value == 'no') {
+                if (id.charAt(id.length - 1) == '4') {
+                    show('question4a');
+                }
+                if (id.charAt(id.length - 1) == '5') {
+                    hide('question5a');
+                }
+                if (id.charAt(id.length - 1) == '6') {
+                    hide('question6a');
+                }
+                if (id.charAt(id.length - 1) == '7') {
+                    hide('question7a');
+                }
+                if (id.charAt(id.length - 1) == '8') {
+                    hide('question8a');
+                }
+                if (id.charAt(id.length - 1) == '0') {
+                    hide('question10a');
+                }
+            }
+            else if (id == 'ddEventDetailQuestion11a') {
+                if (dropDown[dropDown.selectedIndex].value == 'other') {
+                    show('question11b');
+                }
+                else {
+                    hide('question11b');
+                }
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+
+<a href="/logout/">Logout</a>
+
+<br /><br /><br /><br />
+
+    <form action="../../{{encounter.id}}/nonBlastHeadInjuryPage1/" method="post">{% csrf_token %}
+
+        <center>
+            <h1>Non-Blast Head Injury Page 1</h1>
+
+            <br /><br />
+
+            <table cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td>
+                        <b>
+                            Tell me in as much detail as possible about the <br />
+                            worst event in which your head was hit the hardest.
+                        </b>
+                    </td>
+                    <td>
+                        <textarea id="txtEventDetailSummary" name="txtEventDetailSummary" cols="50" rows="5"></textarea>
+                    </td>
+                </tr>
+
+            </table>
+
+            <br />
+
+            <table cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td>
+                        <div id="userAdvice">
+                            <b>ADVISE THE SUBJECT,</b> "Some of the questions may seem repetitive, but please bear with me as we are trying to <br />
+                            learn as much as possible about what you have experienced.  If there are any questions where you are not <br />
+                            sure of the answer, please try to give me your best guess." <br /><br />
+                            If the subject has previously answered a question while describing the event, be sure to verify their <br />
+                            response to each question.
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+            <br />
+
+            <table cellpadding="2" cellspacing="2" width="700">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            1.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Can you tell me the date when you experienced this injury?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <input type="date" id="eventDetailQuestion1" name="eventDetailQuestion1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            2.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            How old were you when the injury occurred?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <input type="number" id="txtEventDetailQuestion2" name="txtEventDetailQuestion2" value="1" max="130" min="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            3.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Were there others with you at the time of the injury?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion3" id="ddEventDetailQuestion3">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <table cellpadding="2" cellspacing="2" width="700">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            4.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Were you deployed at the time of this injury?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion4" id="ddEventDetailQuestion4" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question4a" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                4a.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                Did this injury occur prior to your first deployment?
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <select name="ddEventDetailQuestion4a" id="ddEventDetailQuestion4a">
+                                <option value="default"></option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            5.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Did you go to a medical facility?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion5" id="ddEventDetailQuestion5" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question5a" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                5a.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                Were you hospitalized overnight?
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <select name="ddEventDetailQuestion5a" id="ddEventDetailQuestion5a">
+                                <option value="default"></option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            6.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Did you have to have a scan of your head?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion6" id="ddEventDetailQuestion6" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question6a" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                6a.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                What were the results/findings?
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <input type="text" id="txtEventDetailQuestion6a" name="txtEventDetailQuestion6a" maxlength="500" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            7.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Did you have any other physical injuries?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion7" id="ddEventDetailQuestion7" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question7a" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                7a.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                What were they?
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <textarea id="txtEventDetailQuestion7a" name="txtEventDetailQuestion7a" rows="3" cols="20"></textarea>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            8.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Did you miss any work or school?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion8" id="ddEventDetailQuestion8" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question8a" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                8a.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                How many days?
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <input type="number" id="txtEventDetailQuestion8a" name="txtEventDetailQuestion8a" value="1" max="1000" min="1" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            9.
+                        </b>
+                    </td>
+                    <td width="407" align="left">
+                        <b>
+                            How long did it take for you to return to your normal self?
+                        </b>
+                    </td>
+                    <td width="68" align="left">
+                        <input type="number" id="txtEventDetailQuestion9" name="txtEventDetailQuestion9" value="1" max="1000" min="1" />
+                    </td>
+                    <td width="175" align="left">
+                        <select name="ddEventDetailQuestion9" id="ddEventDetailQuestion9">
+                            <option value="default"></option>
+                            <option value="hours">hour(s)</option>
+                            <option value="days">day(s)</option>
+                            <option value="weeks">week(s)</option>
+                            <option value="months">month(s)</option>
+                            <option value="years">year(s)</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            10.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            Was the injury related to combat, motorcycle, non-motorized transportion, or sports?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion10" id="ddEventDetailQuestion10" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question10a" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                10a.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                Were you wearing a helmet at the time of injury?
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <select id="ddEventDetailQuestion10a" name="ddEventDetailQuestion10a">
+                                <option value="default"></option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="50" align="right">
+                        <b>
+                            11.
+                        </b>
+                    </td>
+                    <td width="400" align="left">
+                        <b>
+                            To your knowledge was your head struck, or did your head hit something?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select name="ddEventDetailQuestion11" id="ddEventDetailQuestion11">
+                            <option value="default"></option>
+                            <option value="struck">struck</option>
+                            <option value="hit">hit</option>
+                            <option value="dontKnow">don't know</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <table width="700" cellpadding="2" cellspacing="2">
+
+                <tr>
+                    <td width="75" align="right">
+                        <b>
+                            11a.
+                        </b>
+                    </td>
+                    <td width="375" align="left">
+                        <b>
+                            What area of your head/face was struck or hit?
+                        </b>
+                    </td>
+                    <td width="250" align="left">
+                        <select id="ddEventDetailQuestion11a" name="ddEventDetailQuestion11a" onchange="hideOrShow(this.id);">
+                            <option value="default"></option>
+                            <option value="forehead">forehead</option>
+                            <option value="backOfHead">back of head</option>
+                            <option value="faceChin">face/chin</option>
+                            <option value="leftSide">left side</option>
+                            <option value="rightSide">right side</option>
+                            <option value="dontKnow">don't know</option>
+                            <option value="other">other</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div id="question11b" style="display:none;">
+                <table width="700" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td width="75" align="right">
+                            <b>
+                                11b.
+                            </b>
+                        </td>
+                        <td width="375" align="left">
+                            <b>
+                                Other description:
+                            </b>
+                        </td>
+                        <td width="250" align="left">
+                            <input type="text" id="txtEventDetailQuestion11b" name="txtEventDetailQuestion11b" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <br /><br />
+
+            <input type="submit" value="Save and Continue" />
+        </center>
+    </form>
+
+
+{% else %}
+<br /><br /><br />
+<center>
+
+    <h4>You are not logged in.</h4>
+
+    <br /><br />
+
+    <a href="/login/">Login</a>
+
+</center>
+
+{% endif %}
+
+</body>
+</html>

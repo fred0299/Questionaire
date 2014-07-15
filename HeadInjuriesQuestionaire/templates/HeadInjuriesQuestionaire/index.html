@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>Subject Information</title>
+    <style>
+        table,th,td
+        {
+        border:1px solid black;
+        border-collapse:collapse;
+        }
+    </style>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}HeadInjuriesQuestionaire/style.css" />
+    
+
+</head>
+
+<body>
+
+{{ content }}
+
+{% if user.is_authenticated %}
+
+    <a href="/logout/">Logout</a><br />
+       
+    <form action="/index/" method="post">
+        {% csrf_token %}
+    <br /><br /><br />
+    <center>
+
+        <h2>Subject Information</h2>
+
+        <table style="width:300px">
+            <tr>
+                <td align="right">Subject ID:</td>
+                <td align="center"><input type="text" name="subjectID" id="txtSubjectID"/></td>
+            </tr>
+            <tr>
+                <td align="right">Date:</td>
+                <td align="center"><input type="text" name="dateOfQuestionaire" id="dtDate"/></td>
+            </tr>
+            <tr>
+                <td align="right">Administration #:</td>
+                <td align="center"><input type="text" name="administrationNumber" id="txtAdministrationNumber"/></td>
+            </tr>             
+        </table>
+
+        <br /><br />
+
+        <input type="submit" value="Submit" />
+        
+    </center>
+    </form>
+{% else %}
+    <br /><br /><br />
+    <center>
+
+    <h4>You are not logged in.</h4>
+
+    <br /><br />
+
+        <a href="/login/">Login</a>
+
+    </center>
+{% endif %}
+
+</body>
+</html>
